@@ -45,8 +45,3 @@ func threeSum(nums []int) [][]int {
 	}
 	return ans
 }
-func main() {
-	nums := []int{-1, 0, 1, 2, -1, -4}
-	ans := threeSum(nums)
-	fmt.Println(ans)
-}
