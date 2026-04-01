@@ -40,7 +40,7 @@ func inorderTraversal(root *TreeNode) (ans []int) {
 			pre.Right = nil
 		}
 		ans = append(ans, root.Val)
-		root = root.Right // 如果有右子树就访问右子树，没有就顺着线索回到指向的节点
+		root = root.Right
 	}
 	return ans
 }
