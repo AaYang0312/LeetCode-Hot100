@@ -1,37 +1,25 @@
-package main
-
-// 封装一个队列
-type queue []int
-
-func (q *queue) pop() {
-	*q = (*q)[1:len(*q)] // go 左闭右开
-}
-func (q *queue) push(x int) {
-	for len(*q) > 0 && (*q)[len(*q)-1] < x {
-		*q = (*q)[:len(*q)-1]
-	}
-	*q = append(*q, x)
-}
-func (q queue) getMax() int {
-	return q[0]
-}
 func maxSlidingWindow(nums []int, k int) []int {
-	result := []int{}
-	q := queue{}
-	if len(nums) < k {
+	n := len(nums)
+	if n == 0 || k == 0 {
 		return []int{}
 	}
-	for i := 0; i < k; i++ {
-		q.push(nums[i])
-	}
-	result = append(result, q.getMax())
-	// 推论：一个旧元素如果还在单调队列里，它要么在队头（是最大值），要么早就被删了。它绝不可能安安静静地待在队列中间等着被移除
-	for i := k; i < len(nums); i++ {
-		if q[0] >= nums[i-k] {
-			q.pop()
+	ans := make([]int, len(nums)-k+1)
+	q := []int{}
+	for i, x := range nums {
+		// 右边进
+		for len(q) > 0 && nums[q[len(q)-1]] <= x {
+			q = q[:len(q)-1]
 		}
-		q.push(nums[i])
-		result = append(result, q.getMax())
+		q = append(q, i)
+		// 左边出
+		left := i - k + 1
+		if left > q[0] {
+			q = q[1:]
+		}
+		// 记录答案
+		if left >= 0 {
+			ans[left] = nums[q[0]]
+		}
 	}
-	return result
+	return ans
 }
